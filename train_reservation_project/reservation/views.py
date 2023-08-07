@@ -1,3 +1,5 @@
+import random
+import string
 from django.shortcuts import render
 from django.http import JsonResponse
 from .models import Train, Reservation
@@ -32,7 +34,7 @@ def reserve_seats(request):
                         reserved_seats.append(f"1A")
                     
                     # Generate reservation ID
-                    reservation_id = 'R123456'
+                    reservation_id = generate_random_id(5)
 
                     # Create reservation record
                     reservation = Reservation.objects.create(
@@ -59,7 +61,7 @@ def reserve_seats(request):
                         reserved_seats.append(f"2A")
                     
                     # Generate reservation ID
-                    reservation_id = 'R123456'
+                    reservation_id = generate_random_id(5)
 
                     # Create reservation record
                     reservation = Reservation.objects.create(
@@ -77,3 +79,10 @@ def reserve_seats(request):
         except Exception as e:
             return JsonResponse({'error': str(e)})
     return JsonResponse({'error': 'Invalid request method'})
+
+
+
+def generate_random_id(length):
+    characters = string.ascii_letters + string.digits
+    random_id = ''.join(random.choice(characters) for _ in range(length))
+    return random_id
